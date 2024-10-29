@@ -24,4 +24,5 @@ const Container = styled.div`
   width: 608px;
   height: 100%;
   background-color: white;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
 `
