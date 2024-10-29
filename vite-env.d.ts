@@ -10,3 +10,8 @@ interface ImportMeta {
 interface Window {
   kakao: any
 }
+
+declare module '*.png' {
+  const content: string
+  export default content
+}
