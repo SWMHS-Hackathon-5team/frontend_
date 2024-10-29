@@ -4,9 +4,35 @@ import { Logo } from '@/assets/logo'
 import Input from '@/components/Input'
 import { Button } from '@/components/button'
 import { theme } from '@/styles/theme'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import apiClient from '@/api/apiClient'
 
 export const Signup = () => {
+  const [id, setId] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [okPassword, setOkPassword] = useState<string>('')
+  const navigate = useNavigate()
+
+  const handleSignUp = async () => {
+    if (password !== okPassword) {
+      alert('비밀번호가 일치하지 않습니다.')
+      return
+    }
+
+    try {
+      await apiClient.post('/auth/sign-up', {
+        userId: id,
+        password,
+      })
+
+      alert('회원가입에 성공하셨습니다.')
+      navigate('/signin')
+    } catch (e) {
+      alert('회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.')
+    }
+  }
+
   return (
     <Wrapper>
       <Logo />
@@ -15,11 +41,32 @@ export const Signup = () => {
         만나보세요.
       </Text>
       <InputWrapper>
-        <Input placeholder='아이디를 입력해주세요' type='string' />
-        <Input placeholder='비밀번호를 입력해주세요' type='string' />
-        <Input placeholder='비밀번호를 다시 입력해주세요' type='string' />
+        <Input
+          placeholder='아이디를 입력해주세요'
+          type='text' // 'string' 대신 'text' 사용
+          state={id}
+          setState={setId}
+        />
+        <Input
+          placeholder='비밀번호를 입력해주세요'
+          type='password'
+          state={password}
+          setState={setPassword}
+        />
+        <Input
+          placeholder='비밀번호를 다시 입력해주세요'
+          type='password'
+          state={okPassword}
+          setState={setOkPassword}
+        />
       </InputWrapper>
-      <Button width={440} height={54} size={24} weight={700}>
+      <Button
+        width={440}
+        height={54}
+        size={24}
+        weight={700}
+        onClick={handleSignUp}
+      >
         회원가입
       </Button>
       <TipBox>
