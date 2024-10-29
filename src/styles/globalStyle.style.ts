@@ -138,6 +138,7 @@ export const GlobalStyle = css`
   }
 
   body {
-    background-color: #f9f9f9;
+    background-color: #fff;
+    font-family: 'SpoqaHanSansNeo';
   }
 `

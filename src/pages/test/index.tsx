@@ -1,4 +1,5 @@
-import { StyledParagraph, TestWrapper } from "./style";
+import Input from '@/components/Input'
+import { StyledParagraph, TestWrapper } from './style'
 
 const Test = () => {
   return (
@@ -7,8 +8,9 @@ const Test = () => {
         <StyledParagraph>하이</StyledParagraph>
         <input />
       </TestWrapper>
+      <Input placeholder='하이' type='text' />
     </div>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test
