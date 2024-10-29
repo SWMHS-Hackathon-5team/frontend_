@@ -26,7 +26,7 @@ export const Signup = () => {
         <Text size={16} weight={500}>
           만약 계정이 있다면?&nbsp;
         </Text>
-        <Link to='signin'>
+        <Link to='/signin'>
           <Text size={16} weight={500} color={theme.color.blue}>
             로그인하기
           </Text>
