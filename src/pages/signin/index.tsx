@@ -3,19 +3,20 @@ import * as S from './style'
 import { Button } from '@/components/button'
 import { useState } from 'react'
 import apiClient from '@/api/apiClient'
+import { useNavigate } from 'react-router-dom'
 
 const Signin = () => {
   const [id, setId] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-
+  const navigate = useNavigate()
   const handleSignIn = async () => {
     try {
-      const response = await apiClient.post('/auth/signin', {
+      const response = await apiClient.post('/auth/sign-in', {
         userId: id,
         password,
       })
-
-      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('accessToken', response.data.data.accessToken)
+      navigate('/')
     } catch (e) {}
   }
   return (
