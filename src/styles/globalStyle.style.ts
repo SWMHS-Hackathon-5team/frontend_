@@ -119,6 +119,7 @@ export const GlobalStyle = css`
     border: 0;
     box-sizing: border-box;
     font-family: Spoqa Han Sans Neo;
+    text-decoration: none;
   }
 
   input:focus,
