@@ -1,8 +1,23 @@
 import Input from '@/components/Input'
 import * as S from './style'
 import { Button } from '@/components/button'
+import { useState } from 'react'
+import apiClient from '@/api/apiClient'
 
 const Signin = () => {
+  const [id, setId] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+
+  const handleSignIn = async () => {
+    try {
+      const response = await apiClient.post('/auth/signin', {
+        userId: id,
+        password,
+      })
+
+      localStorage.setItem('token', response.data.token)
+    } catch (e) {}
+  }
   return (
     <S.SigninWrapper>
       <S.SigninContainer>
@@ -13,10 +28,26 @@ const Signin = () => {
           로그인 후 더 스마트한 서비스를 만나보세요.
         </S.Description>
         <S.InputContainer>
-          <Input placeholder='아이디를 입력해주세요' type='email' />
-          <Input placeholder='비밀번호를 입력해주세요' type='password' />
+          <Input
+            state={id}
+            setState={setId}
+            placeholder='아이디를 입력해주세요'
+            type='text'
+          />
+          <Input
+            state={password}
+            setState={setPassword}
+            placeholder='비밀번호를 입력해주세요'
+            type='password'
+          />
         </S.InputContainer>
-        <Button size={24} weight={700} width={440} height={54}>
+        <Button
+          onClick={handleSignIn}
+          size={24}
+          weight={700}
+          width={440}
+          height={54}
+        >
           로그인
         </Button>
         <S.SignUpPrompt>

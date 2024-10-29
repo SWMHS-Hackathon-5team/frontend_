@@ -8,6 +8,7 @@ interface PropsType extends ButtonHTMLAttributes<HTMLButtonElement> {
   size: number // font-size
   weight: number // font-weight
   children: string
+  onClick?: () => void
 }
 
 export const Button = ({
@@ -16,9 +17,16 @@ export const Button = ({
   size = 20,
   weight = 400,
   children,
+  onClick,
 }: PropsType) => {
   return (
-    <Wrapper width={width} height={height} size={size} weight={weight}>
+    <Wrapper
+      width={width}
+      height={height}
+      onClick={onClick}
+      size={size}
+      weight={weight}
+    >
       {children}
     </Wrapper>
   )
