@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
 import { theme } from '@/styles/theme'
+import { ButtonHTMLAttributes } from 'react'
 
-type PropsType = {
+interface PropsType extends ButtonHTMLAttributes<HTMLButtonElement> {
   width: string | number
   height: string | number
   size: number // font-size
