@@ -43,15 +43,15 @@ export const Map = () => {
   const [isRentalBoxOpen, setIsRentalBoxOpen] = useState<number | null>(null)
   const [isRequestBoxOpen, setIsRequestBoxOpen] = useState<number | null>(null)
   const [isAccept, setIsAccept] = useState<boolean>(false)
+  const { value } = useBoolean()
   const renRef = useOutsideClick(() => {
     setIsRentalBoxOpen(null)
   })
   const reqRef = useOutsideClick(() => {
-    setIsRequestBoxOpen(null)
+    if (value) setIsRequestBoxOpen(null)
   })
   const [vehicle, _] = useState<VehicleType[]>(vehicleDummy)
   const [requests, setRequests] = useState<RequestType[]>()
-  const { value } = useBoolean()
 
   const onAccept = () => {
     setIsAccept(true)
