@@ -64,6 +64,10 @@ export const Map = () => {
   const onAccept = () => {
     setIsAccept(true)
   }
+  const onSuccess = () => {
+    setIsAccept(false)
+    setIsRequestBoxOpen(null)
+  }
 
   useEffect(() => {
     const getLocation = () => {
@@ -245,6 +249,7 @@ export const Map = () => {
           <RequestBoxInner
             isAccept={isAccept}
             onAccept={onAccept}
+            onSuccess={onSuccess}
             info={
               requests?.find((item) => item.id === isRequestBoxOpen) ?? null
             }

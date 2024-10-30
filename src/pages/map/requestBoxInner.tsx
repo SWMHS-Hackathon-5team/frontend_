@@ -9,10 +9,12 @@ export const RequestBoxInner = ({
   info,
   onAccept,
   isAccept,
+  onSuccess,
 }: {
   info: RequestType | null
   onAccept: () => void
   isAccept: boolean
+  onSuccess: () => void
 }) => {
   const { _setValue } = useBoolean()
 
@@ -72,7 +74,8 @@ export const RequestBoxInner = ({
           onClick={() => {
             if (isAccept) {
               fetchRequestSucceed().then(() => {
-                alert('성공 요청 보냄')
+                onSuccess()
+                _setValue(true)
               })
             } else {
               fetchRequestsData().then(() => {
