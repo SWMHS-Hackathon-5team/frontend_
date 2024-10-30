@@ -2,6 +2,10 @@ import { theme } from '@/styles/theme'
 import styled from '@emotion/styled'
 
 export const Wrapper = styled.div`
+  min-height: 100vh;
+`
+
+export const Container = styled.div`
   padding: 36px 37px;
 `
 

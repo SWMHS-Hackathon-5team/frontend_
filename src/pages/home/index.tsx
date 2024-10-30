@@ -3,6 +3,7 @@ import * as S from './style'
 import Header from '@/components/Header'
 import apiClient from '@/api/apiClient'
 import { useEffect, useState } from 'react'
+import MainItems from '@/components/MainItems'
 
 const mockActivityHistory = [
   {
@@ -50,9 +51,9 @@ const ShowHistory = () => {
     fetchData()
   }, [])
   return (
-    <div>
+    <S.Wrapper>
       <Header />
-      <S.Wrapper>
+      <S.Container>
         <S.PayContainer>
           <S.PayTitle>SWING PAY</S.PayTitle>
           <S.FlexContainer>
@@ -61,25 +62,15 @@ const ShowHistory = () => {
           </S.FlexContainer>
         </S.PayContainer>
         <S.ActivityHistory>
-          활동 내역 조회하기 <RightArrow />
+          내 해주세요 <RightArrow />
         </S.ActivityHistory>
-
-        {mockActivityHistory.map((item, index) => (
-          <S.ItemsContainer key={index}>
-            <S.ItemsText>{item.date}</S.ItemsText>
-            <S.ItemsContentsContainer>
-              <S.FlexContainer>
-                <S.ItemsTitle>{item.title}</S.ItemsTitle>
-                <S.ItemsText>{item.distance}</S.ItemsText>
-              </S.FlexContainer>
-              <S.ItemsText style={{ marginLeft: 'auto' }}>
-                {item.price}
-              </S.ItemsText>
-            </S.ItemsContentsContainer>
-          </S.ItemsContainer>
-        ))}
-      </S.Wrapper>
-    </div>
+        <MainItems data={mockActivityHistory} />
+        <S.ActivityHistory>
+          내 활동 내역 <RightArrow />
+        </S.ActivityHistory>
+        <MainItems data={mockActivityHistory} />
+      </S.Container>
+    </S.Wrapper>
   )
 }
 
