@@ -169,7 +169,7 @@ export const Map = () => {
           marker.setMap(map)
 
           window.kakao.maps.event.addListener(marker, 'click', () => {
-            if (value) setIsRentalBoxOpen(item.id)
+            if (isAccept) setIsRentalBoxOpen(item.id)
           })
         })
 
