@@ -1,3 +1,4 @@
+import { Footer } from '@/components/footer'
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
 
@@ -6,6 +7,7 @@ export const Layout = () => {
     <Wrapper>
       <Container>
         <Outlet />
+        <Footer />
       </Container>
     </Wrapper>
   )
@@ -25,4 +27,5 @@ const Container = styled.div`
   height: 100%;
   background-color: white;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
 `
