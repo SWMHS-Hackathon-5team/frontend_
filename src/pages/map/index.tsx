@@ -239,19 +239,23 @@ export const Map = () => {
   return (
     <Wrapper>
       {!isAccept && <BackButton />}
-      {isRentalBoxOpen && (
-        <RentalBox ref={renRef}>
-          <RentalBoxInner
-            isRiding={isRiding}
-            onOff={onOff}
-            onRide={onRide}
-            time={
-              requests?.find((item) => item.id === isRequestBoxOpen) ?? null
-            }
-            info={vehicle?.find((item) => item.id === isRentalBoxOpen) ?? null}
-          />
-        </RentalBox>
-      )}
+      {isRentalBoxOpen &&
+        (requests?.find((item) => item.id === isRequestBoxOpen) ?? null) &&
+        (vehicle?.find((item) => item.id === isRentalBoxOpen) ?? null) && (
+          <RentalBox ref={renRef}>
+            <RentalBoxInner
+              isRiding={isRiding}
+              onOff={onOff}
+              onRide={onRide}
+              time={
+                requests?.find((item) => item.id === isRequestBoxOpen) ?? null
+              }
+              info={
+                vehicle?.find((item) => item.id === isRentalBoxOpen) ?? null
+              }
+            />
+          </RentalBox>
+        )}
       {isRequestBoxOpen && (
         <RequestBox ref={reqRef} isAccept={value}>
           <RequestBoxInner
