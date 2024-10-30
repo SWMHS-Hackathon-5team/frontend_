@@ -1,61 +1,135 @@
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { RightArrow } from '@/assets/icons'
 import * as S from './style'
 import Header from '@/components/Header'
 import apiClient from '@/api/apiClient'
-import { useEffect, useState } from 'react'
-import MainItems from '@/components/MainItems'
 import { Button } from '@/components/button'
-import { useNavigate } from 'react-router-dom'
+import RequestItems from '@/components/RequestItem'
 
-const mockActivityHistory = [
-  {
-    date: '10월 30일',
-    title: '편의점에서 메로나 사다주세요',
-    distance: '400m',
-    price: '50,000원',
-  },
-  {
-    date: '10월 30일',
-    title: '편의점에서 메로나 사다주세요',
-    distance: '400m',
-    price: '50,000원',
-  },
-]
+// Types
+type ReqType = 'NON' | 'DOING' | 'WAITING' | 'SUCCESS' | 'FAILED'
 
-const ShowHistory = () => {
-  const [money, setMoney] = useState(0)
-  const [activity, setActivities] = useState([])
+interface RequestItem {
+  id: number
+  title: string
+  content: string
+  createdDt: string
+  price: number
+  latitude: number
+  longitude: number
+  reqType: ReqType
+  isSucceed: boolean
+  address: string
+}
+
+interface ApiResponse {
+  status: number
+  message: string
+  data: RequestItem[]
+}
+
+const Home = () => {
+  const [money, setMoney] = useState<number>(0)
+  const [myRequests, setMyRequests] = useState<ApiResponse>({
+    status: 0,
+    message: '',
+    data: [],
+  })
   const navigate = useNavigate()
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMoney = async () => {
       try {
-        const moneyResponse = await apiClient.get('/money/my')
-        console.log(moneyResponse)
-        setMoney(moneyResponse.data.data.data.money)
+        const response = await apiClient.get('/money/my')
+        setMoney(response.data.data.data.money)
       } catch (err) {
-        console.error('Error fetching data:', err)
+        console.error('Error fetching money:', err)
       }
     }
 
-    fetchData()
-  }, [])
-
-  useEffect(() => {
-    const fetchData = async () => {
+    const fetchRequests = async () => {
       try {
-        const moneyResponse = await apiClient.get('/request/my')
-        setActivities(moneyResponse.data.data)
-        console.log(moneyResponse)
+        const response = await apiClient.get('/request/my')
+        setMyRequests(response.data)
       } catch (err) {
-        console.error('Error fetching data:', err)
+        console.error('Error fetching requests:', err)
       }
     }
 
-    fetchData()
+    fetchMoney()
+    fetchRequests()
   }, [])
 
   const handlePayDetailNavigate = () => {
     navigate('/pay-detail')
+  }
+
+  const tempData: ApiResponse = {
+    status: 0,
+    message: 'string',
+    data: [
+      {
+        id: 0,
+        title: '핫식스 좀 사다주세용~',
+        content: '핫식스 좀 사다주세용~',
+        createdDt: '2024-10-30T04:06:35.763Z',
+        price: 50000,
+        latitude: 0,
+        longitude: 0,
+        reqType: 'NON',
+        isSucceed: true,
+        address: 'string',
+      },
+      {
+        id: 2,
+        title: '우리집 고양이 구경하러 오세요',
+        content: '우리집 고양이 구경하러 오세요',
+        createdDt: '2024-10-29T04:06:35.763Z',
+        price: 0,
+        latitude: 0,
+        longitude: 0,
+        reqType: 'DOING',
+        isSucceed: true,
+        address: 'string',
+      },
+      {
+        id: 3,
+        title: '명함 수령 대신 해주세요!',
+        content: '명함 수령 대신 해주세요!',
+        createdDt: '2024-10-28T04:06:35.763Z',
+        price: 0,
+        latitude: 0,
+        longitude: 0,
+        reqType: 'WAITING',
+        isSucceed: true,
+        address: 'string',
+      },
+      {
+        id: 4,
+        title: '제 레포트 좀 내주세요...',
+        content: '제 레포트 좀 내주세요...',
+        createdDt: '2024-10-27T04:06:35.763Z',
+        price: 0,
+        latitude: 0,
+        longitude: 0,
+        reqType: 'SUCCESS',
+        isSucceed: true,
+        address: 'string',
+      },
+      {
+        id: 5,
+        title: '생일 케이크 픽업 해주세요',
+        content: '생일 케이크 픽업 해주세요',
+        createdDt: '2024-10-26T04:06:35.763Z',
+        price: 0,
+        latitude: 0,
+        longitude: 0,
+        reqType: 'FAILED',
+        isSucceed: true,
+        address: 'string',
+      },
+    ],
   }
 
   return (
@@ -80,14 +154,14 @@ const ShowHistory = () => {
         <S.ActivityHistory>
           내 해주세요 <RightArrow />
         </S.ActivityHistory>
-        <MainItems data={mockActivityHistory} />
+        <RequestItems data={tempData} />
         <S.ActivityHistory>
           내 활동 내역 <RightArrow />
         </S.ActivityHistory>
-        <MainItems data={mockActivityHistory} />
+        <RequestItems data={tempData} />
       </S.Container>
     </S.Wrapper>
   )
 }
 
-export default ShowHistory
+export default Home

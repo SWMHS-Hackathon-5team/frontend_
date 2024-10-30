@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './outlet'
-import Home from '@/pages/home'
-import { Signup } from '@/pages/signup'
+
+import { Signup } from '@/pages/signup/signup'
 import Signin from '@/pages/signin'
 import Request from '@/pages/request'
 import PayDetail from '@/pages/payDetail'
+import Home from '@/pages/home'
 
 export const Router = () => {
   return (

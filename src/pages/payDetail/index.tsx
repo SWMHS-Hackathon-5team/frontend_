@@ -58,12 +58,12 @@ const PayDetail = () => {
     },
   ]
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString)
     return `${date.getMonth() + 1}월 ${date.getDate()}일`
   }
 
-  const formatAmount = (amount) => {
+  const formatAmount = (amount: number): string => {
     return amount.toLocaleString() + '원'
   }
 

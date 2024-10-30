@@ -29,7 +29,7 @@ export const FlexContainer = styled.div`
   justify-content: space-between;
 `
 
-export const RiderState = styled.p`
+export const ReqTypeState = styled.p`
   font-size: 1rem;
   font-weight: 400;
 `
