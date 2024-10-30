@@ -10,7 +10,8 @@ interface StatusConfig {
 
 interface RequestItem {
   id: string | number
-  createdDt: string
+  createdDt?: string
+  updateDt?: string
   title: string
   reqType: ReqType
   price: string | number
@@ -34,7 +35,8 @@ const RequestItems: React.FC<RequestItemsProps> = ({ data }) => {
   const getStatus = (reqType: ReqType): StatusConfig =>
     STATUS_CONFIG[reqType] || { text: '', color: '#000' }
 
-  const formatDate = (dateString: string): string => {
+  const formatDate = (dateString?: string): string => {
+    if (!dateString) return '날짜 없음'
     const date = new Date(dateString)
     const month = date.getMonth() + 1
     const day = date.getDate()
@@ -47,7 +49,9 @@ const RequestItems: React.FC<RequestItemsProps> = ({ data }) => {
         const { text: statusText, color: statusColor } = getStatus(item.reqType)
         return (
           <S.ItemsContainer key={item.id}>
-            <S.ItemsText>{formatDate(item.createdDt)}</S.ItemsText>
+            <S.ItemsText>
+              {formatDate(item.createdDt || item.updateDt)}
+            </S.ItemsText>
             <S.ItemsContentsContainer>
               <S.FlexContainer>
                 <S.ItemsTitle>{item.title}</S.ItemsTitle>

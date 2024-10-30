@@ -6,8 +6,9 @@ import Request from '@/pages/request'
 import PayDetail from '@/pages/payDetail'
 import Home from '@/pages/home'
 import { Map } from '@/pages/map'
-import HelpMe from '@/pages/MyActivity'
+
 import MyActivity from '@/pages/MyActivity'
+import HelpMe from '@/pages/helpMe'
 
 export const Router = () => {
   return (
