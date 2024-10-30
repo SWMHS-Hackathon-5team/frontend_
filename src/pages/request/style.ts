@@ -80,3 +80,40 @@ export const Label = styled.label`
   font-weight: 700;
   color: #000;
 `
+
+export const ModalContainer = styled.div`
+  width: 100%;
+  width: 448px;
+  height: 258px;
+  padding: 36px 38px;
+  background-color: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+
+export const ModalTitle = styled.p`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+`
+
+export const ModalContent = styled.p`
+  margin-top: 16px;
+  margin-bottom: 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #000;
+`
+
+export const ModalButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+`

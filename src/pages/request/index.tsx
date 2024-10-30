@@ -18,6 +18,9 @@ const Request = () => {
   const [roadAddress, setRoadAddress] = useState<string>('')
   const [detailAddress, setDetailAddress] = useState<string>('')
 
+  // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
   const KAKAO_REST_API_KEY = `${import.meta.env.VITE_KAKAO_REST_API}`
 
   const convertAddressToCoordinates = async (
@@ -49,7 +52,7 @@ const Request = () => {
 
     if (coordinates) {
       try {
-        const response = await apiClient.post('/request', {
+        await apiClient.post('/request', {
           title,
           content,
           price: money,
@@ -57,7 +60,8 @@ const Request = () => {
           longitude: coordinates.lng,
           address: detailAddress,
         })
-        console.log('요청이 성공적으로 전송되었습니다:', response)
+
+        setIsModalOpen(true)
       } catch (e) {
         console.error('요청 중 오류가 발생했습니다:', e)
       }
@@ -65,6 +69,7 @@ const Request = () => {
       console.error('좌표 변환에 실패했습니다.')
     }
   }
+
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -77,6 +82,8 @@ const Request = () => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value)
   }
+
+  const closeModal = () => setIsModalOpen(false)
 
   return (
     <div>
@@ -152,6 +159,31 @@ const Request = () => {
             해주세요 등록하기
           </Button>
         </S.ButtonWrapper>
+
+        {isModalOpen && (
+          <S.ModalContainer>
+            <div>
+              <S.ModalTitle>요청 완료</S.ModalTitle>
+
+              <S.ModalContent>
+                해주세요 등록이 완료되었습니다. 라이더가 의뢰를 수락할 때까지
+                기다려주세요.
+              </S.ModalContent>
+            </div>
+            <S.ModalButtonContainer>
+              <Button
+                onClick={closeModal}
+                styleType='ghost'
+                size={16}
+                weight={700}
+                width={78}
+                height={36}
+              >
+                확인
+              </Button>
+            </S.ModalButtonContainer>
+          </S.ModalContainer>
+        )}
       </S.Wrapper>
     </div>
   )
