@@ -1,14 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from './outlet'
-
 import { Signup } from '@/pages/signup/signup'
 import Signin from '@/pages/signin'
 import Request from '@/pages/request'
 import PayDetail from '@/pages/payDetail'
 import Home from '@/pages/home'
-import Test from '@/pages/test'
-import { Signup } from '@/pages/signup'
-import Signin from '@/pages/signin'
 import { Map } from '@/pages/map'
 
 export const Router = () => {
