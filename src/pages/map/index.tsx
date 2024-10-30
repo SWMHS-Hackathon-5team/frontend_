@@ -15,6 +15,23 @@ import HalfImg from '@/assets/icons/battery/half.png'
 import ThreeQuarterImg from '@/assets/icons/battery/threeQuarter.png'
 import NoneImg from '@/assets/icons/battery/none.png'
 import apiClient from '@/api/apiClient'
+import { useBoolean } from '@/context/boolContext'
+
+export interface RequestType {
+  id: number
+  title: string
+  content: string
+  createdDt: string // ISO 8601 형식의 날짜 및 시간
+  endDt: string // ISO 8601 형식의 날짜 및 시간
+  length: number
+  price: number
+  latitude: number
+  longitude: number
+  reqType: 'NON' | string // 'NON' 외의 다른 문자열도 허용하는 경우
+  isSuggested: boolean
+  expectedTime: number
+  expectedDistance: number
+}
 
 export const Map = () => {
   const [location, setLocation] = useState<{
@@ -24,15 +41,21 @@ export const Map = () => {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [isRentalBoxOpen, setIsRentalBoxOpen] = useState<number | null>(null)
-  const [isRequestBoxOpen, setIsRequestBoxOpen] = useState<boolean>(false)
+  const [isRequestBoxOpen, setIsRequestBoxOpen] = useState<number | null>(null)
+  const [isAccept, setIsAccept] = useState<boolean>(false)
   const renRef = useOutsideClick(() => {
     setIsRentalBoxOpen(null)
   })
   const reqRef = useOutsideClick(() => {
-    setIsRequestBoxOpen(false)
+    setIsRequestBoxOpen(null)
   })
   const [vehicle, _] = useState<VehicleType[]>(vehicleDummy)
-  const [requests, setRequests] = useState()
+  const [requests, setRequests] = useState<RequestType[]>()
+  const { value } = useBoolean()
+
+  const onAccept = () => {
+    setIsAccept(true)
+  }
 
   useEffect(() => {
     const getLocation = () => {
@@ -79,7 +102,7 @@ export const Map = () => {
   }, [location])
 
   useEffect(() => {
-    if (location && window.kakao && window.kakao.maps) {
+    if (location && window.kakao && window.kakao.maps && requests && vehicle) {
       const container = document.getElementById('map')
       if (container) {
         const options = {
@@ -136,73 +159,80 @@ export const Map = () => {
           })
         })
 
-        // vehicle.forEach((item) => {
-        //   const imageSrc = MarkerImg
-        //   const imageSize = new window.kakao.maps.Size(
-        //     ratio * 75,
-        //     ratio * 84.75,
-        //   )
-        //   const imageOption = {
-        //     offset: new window.kakao.maps.Point(ratio * 37.5, ratio * 84.75),
-        //   }
+        requests.forEach((item) => {
+          const imageSrc = MarkerImg
+          const imageSize = new window.kakao.maps.Size(
+            ratio * 75,
+            ratio * 84.75,
+          )
+          const imageOption = {
+            offset: new window.kakao.maps.Point(ratio * 37.5, ratio * 84.75),
+          }
 
-        //   const markerImage = new window.kakao.maps.MarkerImage(
-        //     imageSrc,
-        //     imageSize,
-        //     imageOption,
-        //   )
+          const markerImage = new window.kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize,
+            imageOption,
+          )
 
-        //   const markerPosition = new window.kakao.maps.LatLng(
-        //     item.latitude,
-        //     item.longitude,
-        //   )
+          const markerPosition = new window.kakao.maps.LatLng(
+            item.latitude,
+            item.longitude,
+          )
 
-        //   const marker = new window.kakao.maps.Marker({
-        //     position: markerPosition,
-        //     image: markerImage,
-        //   })
+          const marker = new window.kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage,
+          })
 
-        //   marker.setMap(map)
+          marker.setMap(map)
 
-        //   const content = ReactDOMServer.renderToString(
-        //     <Bubble ratio={ratio} />,
-        //   )
-        //   const position = new window.kakao.maps.LatLng(
-        //     location.latitude,
-        //     location.longitude,
-        //   )
+          const content = ReactDOMServer.renderToString(
+            <Bubble ratio={ratio} />,
+          )
+          const position = new window.kakao.maps.LatLng(
+            item.latitude,
+            item.longitude,
+          )
 
-        //   const customOverlay = new window.kakao.maps.CustomOverlay({
-        //     position: position,
-        //     content: content,
-        //     xAnchor: 0.5,
-        //     yAnchor: 2,
-        //   })
+          const customOverlay = new window.kakao.maps.CustomOverlay({
+            position: position,
+            content: content,
+            xAnchor: 0.5,
+            yAnchor: 2,
+          })
 
-        //   window.kakao.maps.event.addListener(marker, 'click', () => {
-        //     customOverlay.setMap(map)
-        //     map.setCenter(markerPosition)
-        //   })
+          window.kakao.maps.event.addListener(marker, 'click', () => {
+            customOverlay.setMap(map)
+            map.setCenter(markerPosition)
+            setIsRequestBoxOpen(item.id)
+          })
 
-        //   window.kakao.maps.event.addListener(map, 'click', () => {
-        //     customOverlay.setMap(null)
-        //   })
-        // })
+          window.kakao.maps.event.addListener(map, 'click', () => {
+            customOverlay.setMap(null)
+          })
+        })
       }
     }
-  }, [location])
+  }, [location, vehicle, requests])
 
   return (
     <Wrapper>
-      <BackButton />
+      {!isAccept && <BackButton />}
       {isRentalBoxOpen && (
         <RentalBox ref={renRef}>
           <RentalBoxInner />
         </RentalBox>
       )}
       {isRequestBoxOpen && (
-        <RequestBox ref={reqRef}>
-          <RequestBoxInner />
+        <RequestBox ref={reqRef} isAccept={value}>
+          <RequestBoxInner
+            isAccept={isAccept}
+            onAccept={onAccept}
+            info={
+              requests?.find((item) => item.id === isRequestBoxOpen) ?? null
+            }
+          />
         </RequestBox>
       )}
 
@@ -276,15 +306,17 @@ const RentalBox = styled.div`
   }
 `
 
-const RequestBox = styled.div`
+const RequestBox = styled.div<{ isAccept: boolean }>`
   position: absolute;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.25);
   width: 536px;
   z-index: 101;
-  top: 48px;
+  ${({ isAccept }) => (isAccept ? 'top: 48px' : 'bottom:-116px')};
   left: 36px;
   padding: 36px;
 

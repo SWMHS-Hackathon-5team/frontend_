@@ -1,13 +1,16 @@
 import { Footer } from '@/components/footer'
+import { useBoolean } from '@/context/boolContext'
 import styled from '@emotion/styled'
 import { Outlet } from 'react-router-dom'
 
 export const Layout = () => {
+  const { value } = useBoolean()
+
   return (
     <Wrapper>
       <Container>
         <Outlet />
-        <Footer />
+        {value && <Footer />}
       </Container>
     </Wrapper>
   )

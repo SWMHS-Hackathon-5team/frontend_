@@ -5,7 +5,7 @@ type PropsType = {
   size: number
   weight: number
   color?: string
-  children: string
+  children: string | string[]
   align?: 'left' | 'center' | 'right'
 }
 
@@ -16,14 +16,18 @@ export const Text = ({
   color = '#000000',
   align = 'left',
 }: PropsType) => {
-  const processedText = children.replace(/\\n/g, '\n')
+  const textArray = Array.isArray(children) ? children : [children]
 
   return (
     <Wrapper size={size} weight={weight} color={color} align={align}>
-      {processedText.split('\n').map((str, idx) => (
+      {textArray.map((text, idx) => (
         <React.Fragment key={idx}>
-          {str}
-          <br />
+          {text.split('\\n').map((str, lineIdx) => (
+            <React.Fragment key={lineIdx}>
+              {str}
+              <br />
+            </React.Fragment>
+          ))}
         </React.Fragment>
       ))}
     </Wrapper>
