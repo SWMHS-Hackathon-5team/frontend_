@@ -24,7 +24,12 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   width: 608px;
-  height: 100%;
+  height: 100vh;
+  overflow: auto;
+  padding-bottom: 140px;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
   background-color: white;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
   position: relative;

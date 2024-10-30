@@ -141,5 +141,6 @@ export const GlobalStyle = css`
   body {
     background-color: #fff;
     font-family: 'SpoqaHanSansNeo';
+    overflow: hidden;
   }
 `
