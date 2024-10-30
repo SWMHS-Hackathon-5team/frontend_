@@ -21,7 +21,7 @@ export const Footer = () => {
           height={40}
           size={20}
           weight={500}
-          styleType={pathname !== '' && 'ghost'}
+          styleType={pathname !== '' ? 'ghost' : 'solid'}
         >
           해주세요
         </Button>
@@ -31,13 +31,13 @@ export const Footer = () => {
           <img src={BarcodeImg} />
         </MiddleButton>
       </Link>
-      <Link to={''}>
+      <Link to={'/map'}>
         <Button
           width={122}
           height={40}
           size={20}
           weight={500}
-          styleType={pathname !== '' && 'ghost'}
+          styleType={pathname !== '/map' ? 'ghost' : 'solid'}
         >
           해줄게요
         </Button>
