@@ -4,6 +4,8 @@ import Header from '@/components/Header'
 import apiClient from '@/api/apiClient'
 import { useEffect, useState } from 'react'
 import MainItems from '@/components/MainItems'
+import { Button } from '@/components/button'
+import { useNavigate } from 'react-router-dom'
 
 const mockActivityHistory = [
   {
@@ -23,6 +25,7 @@ const mockActivityHistory = [
 const ShowHistory = () => {
   const [money, setMoney] = useState(0)
   const [activity, setActivities] = useState([])
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,6 +53,11 @@ const ShowHistory = () => {
 
     fetchData()
   }, [])
+
+  const handlePayDetailNavigate = () => {
+    navigate('/pay-detail')
+  }
+
   return (
     <S.Wrapper>
       <Header />
@@ -58,7 +66,15 @@ const ShowHistory = () => {
           <S.PayTitle>SWING PAY</S.PayTitle>
           <S.FlexContainer>
             <S.MoneyText>{money}</S.MoneyText>
-            <S.Button>상세 조회하기</S.Button>
+            <Button
+              onClick={handlePayDetailNavigate}
+              width={148}
+              height={36}
+              size={16}
+              weight={400}
+            >
+              상세 조회하기
+            </Button>
           </S.FlexContainer>
         </S.PayContainer>
         <S.ActivityHistory>
