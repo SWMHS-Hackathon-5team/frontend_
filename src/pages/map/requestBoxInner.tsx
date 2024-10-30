@@ -30,8 +30,8 @@ export const RequestBoxInner = ({
     return response
   }
 
-  const userId =
-    typeof window !== 'undefined' ? localStorage.getItem('userId') || '' : ''
+  // const userId =
+  //   typeof window !== 'undefined' ? localStorage.getItem('userId') || '' : ''
 
   return (
     <React.Fragment>
@@ -41,7 +41,7 @@ export const RequestBoxInner = ({
         </Text>
         <div>
           <Text size={16} weight={400} color='#A6A6A6'>
-            {'작성자 : ' + userId}
+            {'작성자 : ' + info.writerName}
           </Text>
           <Text size={16} weight={400} color='#A6A6A6'>
             {info.createdDt}
@@ -78,7 +78,7 @@ export const RequestBoxInner = ({
                 _setValue(true)
               })
             } else {
-              fetchRequestsData().then(() => {
+              fetchRequestsData().then((res) => {
                 onAccept()
                 _setValue(false)
               })

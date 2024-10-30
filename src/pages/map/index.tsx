@@ -32,6 +32,7 @@ export interface RequestType {
   isSuggested: boolean
   expectedTime: number
   expectedDistance: number
+  writerName: string
 }
 
 export const Map = () => {
@@ -107,7 +108,12 @@ export const Map = () => {
     if (location) {
       fetchRequestsData()
         .then((res) => {
-          setRequests(res.data.data)
+          const name = localStorage.getItem('userId')
+          const array = res.data.data.filter((item: RequestType) => {
+            return name !== item.writerName
+          })
+
+          setRequests(array)
         })
         .catch((err) => {
           console.log(err)
