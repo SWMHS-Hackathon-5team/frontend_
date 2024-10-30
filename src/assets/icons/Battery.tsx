@@ -2,7 +2,7 @@ import React from 'react'
 
 type PropsType = 'full' | 'half' | 'quarter' | 'threeQuarter' | 'none'
 
-export const Battery = ({ type = 'none' }: { type?: PropsType }) => {
+const Battery = ({ type = 'none' }: { type?: PropsType }) => {
   return (
     <svg
       width='85'
@@ -93,3 +93,5 @@ export const Battery = ({ type = 'none' }: { type?: PropsType }) => {
     </svg>
   )
 }
+
+export default Battery
