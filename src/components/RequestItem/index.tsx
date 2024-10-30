@@ -36,7 +36,7 @@ const RequestItems: React.FC<RequestItemsProps> = ({ data }) => {
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString)
-    const month = date.getMonth() + 1 // getMonth()는 0부터 시작하므로 1을 더합니다
+    const month = date.getMonth() + 1
     const day = date.getDate()
     return `${month}월 ${day}일`
   }

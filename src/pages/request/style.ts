@@ -36,3 +36,8 @@ export const InputSubTitle = styled.p`
   font-weight: 500;
   color: #000;
 `
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
