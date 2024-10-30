@@ -2,21 +2,13 @@ import { Button } from '@/components/button'
 import * as S from './style'
 import Header from '@/components/Header'
 import Input from '@/components/Input'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import apiClient from '@/api/apiClient'
+import axios from 'axios'
 
-const loadKakaoMap = () => {
-  return new Promise((resolve, reject) => {
-    if (window.kakao && window.kakao.maps) {
-      resolve(true)
-    } else {
-      const script = document.createElement('script')
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.VITE_KAKAO_MAP_API}&libraries=services`
-      script.onload = () => resolve(true)
-      script.onerror = () => reject('Kakao 지도 API 로드 실패')
-      document.head.appendChild(script)
-    }
-  })
+interface Coordinates {
+  lat: number
+  lng: number
 }
 
 const Request = () => {
@@ -25,50 +17,54 @@ const Request = () => {
   const [money, setMoney] = useState<string>('')
   const [roadAddress, setRoadAddress] = useState<string>('')
   const [detailAddress, setDetailAddress] = useState<string>('')
-  const [latitude, setLatitude] = useState<number>(0)
-  const [longitude, setLongitude] = useState<number>(0)
 
-  useEffect(() => {
-    loadKakaoMap().catch((error) => console.error(error))
-  }, [])
+  const KAKAO_REST_API_KEY = `${import.meta.env.VITE_KAKAO_REST_API}`
 
-  const validateAddress = () => {
-    return new Promise((resolve, reject) => {
-      if (window.kakao && window.kakao.maps && window.kakao.maps.services) {
-        const geocoder = new window.kakao.maps.services.Geocoder()
-        geocoder.addressSearch(roadAddress, (result, status) => {
-          if (status === window.kakao.maps.services.Status.OK) {
-            setLatitude(parseFloat(result[0].y))
-            setLongitude(parseFloat(result[0].x))
-            resolve(true)
-          } else {
-            reject('주소를 찾을 수 없습니다.')
-          }
-        })
-      } else {
-        reject('Kakao 지도 API가 로드되지 않았습니다.')
+  const convertAddressToCoordinates = async (
+    address: string,
+  ): Promise<Coordinates | null> => {
+    try {
+      const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
+        },
+      })
+
+      if (response.status === 200 && response.data.documents.length > 0) {
+        const { x, y } = response.data.documents[0].address
+        return {
+          lat: parseFloat(y),
+          lng: parseFloat(x),
+        }
       }
-    })
+    } catch (error) {
+      console.error('Error converting address:', error)
+    }
+    return null
   }
 
   const handleButton = async () => {
-    validateAddress()
-    // try {
-    //   await validateAddress()
-    //   const response = await apiClient.post('/request', {
-    //     title,
-    //     content,
-    //     price: money,
-    //     latitude,
-    //     longitude,
-    //     address: `${roadAddress} ${detailAddress}`,
-    //   })
-    //   console.log('요청이 성공적으로 전송되었습니다:', response)
-    //   // 성공 메시지 표시 또는 다른 페이지로 리다이렉트
-    // } catch (e) {
-    //   console.error('요청 중 오류가 발생했습니다:', e)
-    //   // 사용자에게 오류 메시지 표시
-    // }
+    const coordinates = await convertAddressToCoordinates(roadAddress)
+
+    if (coordinates) {
+      console.log('hi')
+      try {
+        const response = await apiClient.post('/request', {
+          title,
+          content,
+          price: money,
+          latitude: coordinates.lat,
+          longitude: coordinates.lng,
+          address: detailAddress,
+        })
+        console.log('요청이 성공적으로 전송되었습니다:', response)
+      } catch (e) {
+        console.error('요청 중 오류가 발생했습니다:', e)
+      }
+    } else {
+      console.error('좌표 변환에 실패했습니다.')
+    }
   }
 
   return (

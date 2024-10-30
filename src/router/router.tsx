@@ -6,6 +6,7 @@ import Request from '@/pages/request'
 import PayDetail from '@/pages/payDetail'
 import Home from '@/pages/home'
 import { Map } from '@/pages/map'
+import Test from '@/pages/test'
 
 export const Router = () => {
   return (
@@ -18,6 +19,7 @@ export const Router = () => {
           <Route path='/request' element={<Request />} />
           <Route path='/pay-detail' element={<PayDetail />} />
           <Route path='/map' element={<Map />} />
+          <Route path='/test' element={<Test />} />
         </Route>
       </Routes>
     </BrowserRouter>
