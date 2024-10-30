@@ -7,6 +7,12 @@ import BarcodeImg from '@/assets/icons/Barcode.png'
 export const Footer = () => {
   const { pathname } = useLocation()
 
+  const notRenderedPathArray = ['/signin', '/signup']
+
+  if (notRenderedPathArray.includes(pathname)) {
+    return
+  }
+
   return (
     <Wrapper>
       <Link to={''}>
@@ -15,7 +21,7 @@ export const Footer = () => {
           height={40}
           size={20}
           weight={500}
-          styleType={pathname !== '' && 'ghost'}
+          styleType={pathname !== '' ? 'ghost' : 'solid'}
         >
           해주세요
         </Button>
@@ -25,13 +31,13 @@ export const Footer = () => {
           <img src={BarcodeImg} />
         </MiddleButton>
       </Link>
-      <Link to={''}>
+      <Link to={'/map'}>
         <Button
           width={122}
           height={40}
           size={20}
           weight={500}
-          styleType={pathname !== '' && 'ghost'}
+          styleType={pathname !== '/map' ? 'ghost' : 'solid'}
         >
           해줄게요
         </Button>
@@ -50,6 +56,7 @@ const Wrapper = styled.div`
   background-color: white;
   position: fixed;
   bottom: 0;
+  z-index: 50;
 `
 
 const MiddleButton = styled.div<{ isSelected: boolean }>`
@@ -65,6 +72,7 @@ const MiddleButton = styled.div<{ isSelected: boolean }>`
   align-items: center;
   border: none;
   cursor: pointer;
+  bottom: 40px;
 
   ${({ isSelected }) =>
     !isSelected &&
