@@ -6,7 +6,6 @@ import Header from '@/components/Header'
 import apiClient from '@/api/apiClient'
 import { Button } from '@/components/button'
 import RequestItems from '@/components/RequestItem'
-import { tempData } from '@/mocks/todo'
 
 type ReqType = 'NON' | 'DOING' | 'WAITING' | 'SUCCESS' | 'FAILED'
 
@@ -36,6 +35,11 @@ const Home = () => {
     message: '',
     data: [],
   })
+  const [myActive, setMyActive] = useState<ApiResponse>({
+    status: 0,
+    message: '',
+    data: [],
+  })
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -57,8 +61,18 @@ const Home = () => {
       }
     }
 
+    const fetchActive = async () => {
+      try {
+        const response = await apiClient.get('/work/my')
+        setMyActive(response.data)
+      } catch (err) {
+        console.error('Error fetching requests:', err)
+      }
+    }
+
     fetchMoney()
     fetchRequests()
+    fetchActive()
   }, [])
 
   const handlePayDetailNavigate = () => {
@@ -90,11 +104,11 @@ const Home = () => {
         <S.ActivityHistory to='help-me'>
           내 해주세요 <RightArrow />
         </S.ActivityHistory>
-        <RequestItems data={{ data: tempData.data.slice(0, 2) }} />
+        <RequestItems data={{ data: myRequests.data.slice(0, 2) }} />
         <S.ActivityHistory to='/my-activity'>
           내 활동 내역 <RightArrow />
         </S.ActivityHistory>
-        <RequestItems data={{ data: tempData.data.slice(0, 2) }} />
+        <RequestItems data={{ data: myActive.data.slice(0, 2) }} />
       </S.Container>
     </S.Wrapper>
   )
