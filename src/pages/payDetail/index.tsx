@@ -66,12 +66,13 @@ const PayDetail = () => {
   const formatAmount = (amount: number): string => {
     return amount.toLocaleString() + '원'
   }
+  const userId = localStorage.getItem('userId')
 
   return (
     <S.Wrapper>
       <Header />
       <S.UserDataContainer>
-        <S.UserDataName>Myowww 님의 SWING PAY</S.UserDataName>
+        <S.UserDataName>{userId}님의 SWING PAY</S.UserDataName>
         <S.UserDataMoney>34,500원</S.UserDataMoney>
       </S.UserDataContainer>
       <S.MintBlock />

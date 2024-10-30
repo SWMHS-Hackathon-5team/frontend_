@@ -34,13 +34,20 @@ const RequestItems: React.FC<RequestItemsProps> = ({ data }) => {
   const getStatus = (reqType: ReqType): StatusConfig =>
     STATUS_CONFIG[reqType] || { text: '', color: '#000' }
 
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString)
+    const month = date.getMonth() + 1 // getMonth()는 0부터 시작하므로 1을 더합니다
+    const day = date.getDate()
+    return `${month}월 ${day}일`
+  }
+
   return (
     <div>
       {data.data.map((item: RequestItem) => {
         const { text: statusText, color: statusColor } = getStatus(item.reqType)
         return (
           <S.ItemsContainer key={item.id}>
-            <S.ItemsText>{item.createdDt}</S.ItemsText>
+            <S.ItemsText>{formatDate(item.createdDt)}</S.ItemsText>
             <S.ItemsContentsContainer>
               <S.FlexContainer>
                 <S.ItemsTitle>{item.title}</S.ItemsTitle>

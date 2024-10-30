@@ -7,7 +7,6 @@ import apiClient from '@/api/apiClient'
 import { Button } from '@/components/button'
 import RequestItems from '@/components/RequestItem'
 
-// Types
 type ReqType = 'NON' | 'DOING' | 'WAITING' | 'SUCCESS' | 'FAILED'
 
 interface RequestItem {
@@ -154,11 +153,11 @@ const Home = () => {
         <S.ActivityHistory>
           내 해주세요 <RightArrow />
         </S.ActivityHistory>
-        <RequestItems data={tempData} />
+        <RequestItems data={{ data: tempData.data.slice(0, 2) }} />
         <S.ActivityHistory>
           내 활동 내역 <RightArrow />
         </S.ActivityHistory>
-        <RequestItems data={tempData} />
+        <RequestItems data={{ data: tempData.data.slice(0, 2) }} />
       </S.Container>
     </S.Wrapper>
   )

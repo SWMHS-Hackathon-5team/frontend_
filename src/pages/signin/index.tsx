@@ -16,6 +16,7 @@ const Signin = () => {
         password,
       })
       localStorage.setItem('accessToken', response.data.data.accessToken)
+      localStorage.setItem('userId', id)
       navigate('/')
     } catch (e) {}
   }
