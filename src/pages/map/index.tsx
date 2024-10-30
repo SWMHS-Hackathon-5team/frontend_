@@ -44,14 +44,22 @@ export const Map = () => {
   const [isRequestBoxOpen, setIsRequestBoxOpen] = useState<number | null>(null)
   const [isAccept, setIsAccept] = useState<boolean>(false)
   const { value } = useBoolean()
+  const [isRiding, setIsRiding] = useState<boolean>(false)
   const renRef = useOutsideClick(() => {
-    setIsRentalBoxOpen(null)
+    if (!isRiding) setIsRentalBoxOpen(null)
   })
   const reqRef = useOutsideClick(() => {
     if (value) setIsRequestBoxOpen(null)
   })
   const [vehicle, _] = useState<VehicleType[]>(vehicleDummy)
   const [requests, setRequests] = useState<RequestType[]>()
+
+  const onRide = () => {
+    setIsRiding(true)
+  }
+  const onOff = () => {
+    setIsRiding(false)
+  }
 
   const onAccept = () => {
     setIsAccept(true)
@@ -155,7 +163,7 @@ export const Map = () => {
           marker.setMap(map)
 
           window.kakao.maps.event.addListener(marker, 'click', () => {
-            setIsRentalBoxOpen(item.id)
+            if (value) setIsRentalBoxOpen(item.id)
           })
         })
 
@@ -221,7 +229,15 @@ export const Map = () => {
       {!isAccept && <BackButton />}
       {isRentalBoxOpen && (
         <RentalBox ref={renRef}>
-          <RentalBoxInner />
+          <RentalBoxInner
+            isRiding={isRiding}
+            onOff={onOff}
+            onRide={onRide}
+            time={
+              requests?.find((item) => item.id === isRequestBoxOpen) ?? null
+            }
+            info={vehicle?.find((item) => item.id === isRentalBoxOpen) ?? null}
+          />
         </RentalBox>
       )}
       {isRequestBoxOpen && (
@@ -273,7 +289,7 @@ const RentalBox = styled.div`
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.25);
   width: 536px;
   z-index: 101;
-  top: 48px;
+  top: 28px;
   left: 36px;
   padding: 36px;
 
@@ -283,6 +299,11 @@ const RentalBox = styled.div`
     & > div {
       display: flex;
       gap: 20px;
+      & > div {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
     }
   }
 

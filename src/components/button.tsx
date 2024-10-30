@@ -7,7 +7,7 @@ interface PropsType extends ButtonHTMLAttributes<HTMLButtonElement> {
   size: number // font-size
   weight: number // font-weight
   children: string
-  styleType?: 'solid' | 'ghost'
+  styleType?: 'solid' | 'ghost' | 'disable' // 'disable' 추가
 }
 
 export const Button = ({
@@ -26,6 +26,7 @@ export const Button = ({
       size={size}
       weight={weight}
       styleType={styleType}
+      disabled={styleType === 'disable'} // disable 스타일 적용 시 버튼 비활성화
       {...props}
     >
       {children}
@@ -39,18 +40,27 @@ const Wrapper = styled.button<PropsType>`
     typeof height === 'number' ? `${height}px` : height};
   font-size: ${({ size }) => `${size}px`};
   font-weight: ${({ weight }) => `${weight}`};
-  color: ${({ styleType }) => (styleType === 'solid' ? 'white' : '#000000')};
+  color: ${({ styleType }) =>
+    styleType === 'solid'
+      ? 'white'
+      : styleType === 'disable'
+        ? '#B0B0B0'
+        : '#000000'};
   background: ${({ styleType }) =>
     styleType === 'solid'
       ? 'linear-gradient(90deg, #3689ff 0%, #b20cff 100%)'
-      : 'white'};
+      : styleType === 'ghost'
+        ? 'white'
+        : 'transparent'};
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
   border: none;
-  cursor: pointer;
+  cursor: ${({ styleType }) =>
+    styleType === 'disable' ? 'not-allowed' : 'pointer'};
+  opacity: ${({ styleType }) => (styleType === 'disable' ? 0.6 : 1)};
 
   ${({ styleType }) =>
     styleType === 'ghost' &&
@@ -72,5 +82,12 @@ const Wrapper = styled.button<PropsType>`
       mask-composite: exclude;
       pointer-events: none;
     }
+  `}
+
+  ${({ styleType }) =>
+    styleType === 'disable' &&
+    `
+    background: transparent;
+    color: #BABABA; // disable 상태의 색상
   `}
 `
