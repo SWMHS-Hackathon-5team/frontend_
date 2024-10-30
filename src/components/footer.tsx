@@ -15,13 +15,13 @@ export const Footer = () => {
 
   return (
     <Wrapper>
-      <Link to={''}>
+      <Link to={'/request'}>
         <Button
           width={122}
           height={40}
           size={20}
           weight={500}
-          styleType={pathname !== '' ? 'ghost' : 'solid'}
+          styleType={pathname !== '/request' ? 'ghost' : 'solid'}
         >
           해주세요
         </Button>

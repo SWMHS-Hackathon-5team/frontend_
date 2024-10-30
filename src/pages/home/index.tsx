@@ -6,6 +6,7 @@ import Header from '@/components/Header'
 import apiClient from '@/api/apiClient'
 import { Button } from '@/components/button'
 import RequestItems from '@/components/RequestItem'
+import { tempData } from '@/mocks/todo'
 
 type ReqType = 'NON' | 'DOING' | 'WAITING' | 'SUCCESS' | 'FAILED'
 
@@ -64,73 +65,6 @@ const Home = () => {
     navigate('/pay-detail')
   }
 
-  const tempData: ApiResponse = {
-    status: 0,
-    message: 'string',
-    data: [
-      {
-        id: 0,
-        title: '핫식스 좀 사다주세용~',
-        content: '핫식스 좀 사다주세용~',
-        createdDt: '2024-10-30T04:06:35.763Z',
-        price: 50000,
-        latitude: 0,
-        longitude: 0,
-        reqType: 'NON',
-        isSucceed: true,
-        address: 'string',
-      },
-      {
-        id: 2,
-        title: '우리집 고양이 구경하러 오세요',
-        content: '우리집 고양이 구경하러 오세요',
-        createdDt: '2024-10-29T04:06:35.763Z',
-        price: 0,
-        latitude: 0,
-        longitude: 0,
-        reqType: 'DOING',
-        isSucceed: true,
-        address: 'string',
-      },
-      {
-        id: 3,
-        title: '명함 수령 대신 해주세요!',
-        content: '명함 수령 대신 해주세요!',
-        createdDt: '2024-10-28T04:06:35.763Z',
-        price: 0,
-        latitude: 0,
-        longitude: 0,
-        reqType: 'WAITING',
-        isSucceed: true,
-        address: 'string',
-      },
-      {
-        id: 4,
-        title: '제 레포트 좀 내주세요...',
-        content: '제 레포트 좀 내주세요...',
-        createdDt: '2024-10-27T04:06:35.763Z',
-        price: 0,
-        latitude: 0,
-        longitude: 0,
-        reqType: 'SUCCESS',
-        isSucceed: true,
-        address: 'string',
-      },
-      {
-        id: 5,
-        title: '생일 케이크 픽업 해주세요',
-        content: '생일 케이크 픽업 해주세요',
-        createdDt: '2024-10-26T04:06:35.763Z',
-        price: 0,
-        latitude: 0,
-        longitude: 0,
-        reqType: 'FAILED',
-        isSucceed: true,
-        address: 'string',
-      },
-    ],
-  }
-
   return (
     <S.Wrapper>
       <Header />
@@ -150,11 +84,11 @@ const Home = () => {
             </Button>
           </S.FlexContainer>
         </S.PayContainer>
-        <S.ActivityHistory>
+        <S.ActivityHistory to='help-me'>
           내 해주세요 <RightArrow />
         </S.ActivityHistory>
         <RequestItems data={{ data: tempData.data.slice(0, 2) }} />
-        <S.ActivityHistory>
+        <S.ActivityHistory to='/my-activity'>
           내 활동 내역 <RightArrow />
         </S.ActivityHistory>
         <RequestItems data={{ data: tempData.data.slice(0, 2) }} />

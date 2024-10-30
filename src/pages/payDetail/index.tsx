@@ -3,6 +3,7 @@ import * as S from './style'
 import apiClient from '@/api/apiClient'
 import { useEffect, useState } from 'react'
 import { theme } from '@/styles/theme'
+import { mockPay } from '@/mocks/pay'
 
 const PayDetail = () => {
   const [response, setResponse] = useState([])
@@ -19,44 +20,6 @@ const PayDetail = () => {
 
     fetchData()
   }, [])
-
-  const mockActivityHistory = [
-    {
-      id: 1,
-      amount: +3000,
-      logType: 'NON',
-      createdDt: '2024-10-30T02:28:52.449Z',
-      content: '바퀴벌레 잡아주세요 ㅜㅜ',
-    },
-    {
-      id: 2,
-      amount: -5000,
-      logType: 'DOING',
-      createdDt: '2024-10-30T02:28:52.449Z',
-      content: '전동자전거 HCDAEIM 대여비',
-    },
-    {
-      id: 3,
-      amount: -6000,
-      logType: 'WAITING',
-      createdDt: '2024-10-30T02:28:52.449Z',
-      content: '전동자전거 HCDAEIM 대여비',
-    },
-    {
-      id: 4,
-      amount: -7000,
-      logType: 'SUCCESS',
-      createdDt: '2024-10-30T02:28:52.449Z',
-      content: '바퀴벌레 잡아주세요 ㅜㅜ',
-    },
-    {
-      id: 5,
-      amount: +9000,
-      logType: 'FAILED',
-      createdDt: '2024-10-30T02:28:52.449Z',
-      content: '바퀴벌레 잡아주세요 ㅜㅜ',
-    },
-  ]
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString)
@@ -77,7 +40,7 @@ const PayDetail = () => {
       </S.UserDataContainer>
       <S.MintBlock />
       <S.PayWrappeer>
-        {mockActivityHistory.map((data) => (
+        {mockPay.map((data) => (
           <S.PayContainer key={data.id}>
             <S.DateText>{formatDate(data.createdDt)}</S.DateText>
             <S.PayContentContainer>

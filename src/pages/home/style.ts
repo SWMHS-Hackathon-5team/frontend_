@@ -1,5 +1,6 @@
 import { theme } from '@/styles/theme'
 import styled from '@emotion/styled'
+import { Link } from 'react-router-dom'
 
 export const Wrapper = styled.div`
   min-height: 100vh;
@@ -13,6 +14,7 @@ export const PayContainer = styled.div`
   padding: 24px 36px;
   background-color: #000;
   border-radius: 8px;
+  margin-bottom: 37.9px;
 `
 
 export const PayTitle = styled.p`
@@ -37,7 +39,7 @@ export const Button = styled.button`
   padding: 8px 28px;
 `
 
-export const ActivityHistory = styled.div`
+export const ActivityHistory = styled(Link)`
   color: #000;
   font-size: 24px;
   font-weight: 700;
