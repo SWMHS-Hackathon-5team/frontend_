@@ -7,6 +7,12 @@ import BarcodeImg from '@/assets/icons/Barcode.png'
 export const Footer = () => {
   const { pathname } = useLocation()
 
+  const notRenderedPathArray = ['/signin', '/signup']
+
+  if (notRenderedPathArray.includes(pathname)) {
+    return
+  }
+
   return (
     <Wrapper>
       <Link to={''}>
@@ -50,6 +56,7 @@ const Wrapper = styled.div`
   background-color: white;
   position: fixed;
   bottom: 0;
+  z-index: 50;
 `
 
 const MiddleButton = styled.div<{ isSelected: boolean }>`
@@ -65,6 +72,7 @@ const MiddleButton = styled.div<{ isSelected: boolean }>`
   align-items: center;
   border: none;
   cursor: pointer;
+  bottom: 40px;
 
   ${({ isSelected }) =>
     !isSelected &&
