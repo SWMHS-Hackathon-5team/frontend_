@@ -2,7 +2,7 @@ import { Button } from '@/components/button'
 import * as S from './style'
 import Header from '@/components/Header'
 import Input from '@/components/Input'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import apiClient from '@/api/apiClient'
 import axios from 'axios'
 
@@ -48,7 +48,6 @@ const Request = () => {
     const coordinates = await convertAddressToCoordinates(roadAddress)
 
     if (coordinates) {
-      console.log('hi')
       try {
         const response = await apiClient.post('/request', {
           title,
@@ -66,12 +65,30 @@ const Request = () => {
       console.error('좌표 변환에 실패했습니다.')
     }
   }
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
+    }
+  }, [content])
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value)
+  }
 
   return (
     <div>
       <Header />
       <S.Wrapper>
-        <S.Title>의뢰 작성하기</S.Title>
+        <div>
+          <S.Title>해주세요 작성하기</S.Title>
+          <S.SubTitle>
+            해주세요는 Myowww님이 원하는 바를 의뢰 형식으로 요청하는 과정입니다.
+            해결되기를 바라는 상황과 내용을 세부적으로 작성해주세요!
+          </S.SubTitle>
+        </div>
         <S.InputWrapper>
           <S.InputContainer>
             <S.InputTitle>의뢰 제목</S.InputTitle>
@@ -84,22 +101,28 @@ const Request = () => {
           </S.InputContainer>
           <S.InputContainer>
             <S.InputTitle>의뢰 세부 내용</S.InputTitle>
-            <Input
-              state={content}
-              setState={setContent}
-              type='text'
-              placeholder='의뢰 세부 내용을 작성해주세요'
-            />
+            <S.TextAreaContainer>
+              <S.TextArea
+                ref={textareaRef}
+                placeholder='의뢰 세부 내용을 작성해주세요'
+                onChange={handleChange}
+                value={content}
+                rows={1}
+              />
+            </S.TextAreaContainer>
           </S.InputContainer>
           <S.InputContainer>
             <S.InputTitle>의뢰 보수</S.InputTitle>
             <S.InputSubTitle>적절한 의뢰 보수를 지정해주세요!</S.InputSubTitle>
-            <Input
-              state={money}
-              setState={setMoney}
-              type='number'
-              placeholder='숫자를 입력해주세요'
-            />
+            <S.Label>
+              <Input
+                state={money}
+                setState={setMoney}
+                type='number'
+                placeholder='숫자를 입력해주세요'
+              />
+              원
+            </S.Label>
           </S.InputContainer>
           <S.InputContainer>
             <S.InputTitle>의뢰 위치</S.InputTitle>
@@ -124,6 +147,7 @@ const Request = () => {
             height={40}
             size={20}
             weight={500}
+            styleType={'ghost'}
           >
             해주세요 등록하기
           </Button>

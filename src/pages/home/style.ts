@@ -23,6 +23,14 @@ export const PayTitle = styled.p`
   color: #fff;
   margin-bottom: 25.9px;
 `
+
+export const SubTitle = styled.p`
+  font-size: 1rem;
+  font-weight: 400;
+  color: #fff;
+  padding-bottom: 4px;
+`
+
 export const MoneyText = styled.p`
   font-size: 1.75rem;
   font-weight: 700;
@@ -81,4 +89,5 @@ export const ItemsTitle = styled.p`
 export const FlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 `

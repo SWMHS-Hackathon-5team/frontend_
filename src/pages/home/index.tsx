@@ -72,7 +72,10 @@ const Home = () => {
         <S.PayContainer>
           <S.PayTitle>SWING PAY</S.PayTitle>
           <S.FlexContainer>
-            <S.MoneyText>{money}</S.MoneyText>
+            <div>
+              <S.SubTitle>잔여 포인트</S.SubTitle>
+              <S.MoneyText>{money} 원</S.MoneyText>
+            </div>
             <Button
               onClick={handlePayDetailNavigate}
               width={148}

@@ -26,8 +26,8 @@ export const Footer = () => {
           해주세요
         </Button>
       </Link>
-      <Link to={''}>
-        <MiddleButton isSelected={pathname === '/'}>
+      <Link to={'/pay-detail'}>
+        <MiddleButton isSelected={pathname === '/pay-detail'}>
           <img src={BarcodeImg} />
         </MiddleButton>
       </Link>
