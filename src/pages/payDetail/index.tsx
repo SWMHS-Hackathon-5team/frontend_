@@ -3,21 +3,45 @@ import * as S from './style'
 import apiClient from '@/api/apiClient'
 import { useEffect, useState } from 'react'
 import { theme } from '@/styles/theme'
-import { mockPay } from '@/mocks/pay'
+
+interface PaymentTransaction {
+  id: number
+  amount: number
+  logType: string
+  createdDt: string
+  content: string
+}
+
+interface PaymentData {
+  [date: string]: PaymentTransaction[]
+}
 
 const PayDetail = () => {
-  const [response, setResponse] = useState([])
+  const [money, setMoney] = useState<number>(0)
+  const [response, setResponse] = useState<PaymentData>({})
+
   useEffect(() => {
+    const fetchMoney = async () => {
+      try {
+        const response = await apiClient.get('/money/my')
+        setMoney(response.data.data.data.money)
+      } catch (err) {
+        console.error('Error fetching money:', err)
+      }
+    }
+
     const fetchData = async () => {
       try {
-        const moneyResponse = await apiClient.get('/account-logs')
-        console.log(moneyResponse)
-        setResponse(moneyResponse.data.data.data.money)
+        const moneyResponse = await apiClient.get<{ data: PaymentData }>(
+          '/account-logs',
+        )
+        setResponse(moneyResponse.data.data)
       } catch (err) {
         console.error('Error fetching data:', err)
       }
     }
 
+    fetchMoney()
     fetchData()
   }, [])
 
@@ -29,6 +53,7 @@ const PayDetail = () => {
   const formatAmount = (amount: number): string => {
     return amount.toLocaleString() + '원'
   }
+
   const userId = localStorage.getItem('userId')
 
   return (
@@ -36,25 +61,33 @@ const PayDetail = () => {
       <Header />
       <S.UserDataContainer>
         <S.UserDataName>{userId}님의 SWING PAY</S.UserDataName>
-        <S.UserDataMoney>34,500원</S.UserDataMoney>
+        <S.UserDataMoney>{money}원</S.UserDataMoney>
       </S.UserDataContainer>
       <S.MintBlock />
       <S.PayWrappeer>
-        {mockPay.map((data) => (
-          <S.PayContainer key={data.id}>
-            <S.DateText>{formatDate(data.createdDt)}</S.DateText>
+        {Object.entries(response).map(([key, value]) => (
+          <S.PayContainer key={key}>
+            <S.DateText>{formatDate(key)}</S.DateText>
             <S.PayContentContainer>
-              <S.PayContentText>{data.content}</S.PayContentText>
-              <S.MoneyText
-                color={
-                  data.amount >= 0
-                    ? `${theme.color.blue}`
-                    : `${theme.color.purple}`
-                }
-              >
-                {data.amount >= 0 ? '+' : ''}
-                {formatAmount(data.amount)}
-              </S.MoneyText>
+              {value.map((item) => (
+                <S._PayContainer key={item.id}>
+                  <S.PayContentText>
+                    {item.logType === 'RENTAL'
+                      ? `전동차 ${item.content} 대여비`
+                      : item.content}
+                  </S.PayContentText>
+                  <S.MoneyText
+                    color={
+                      item.amount >= 0
+                        ? `${theme.color.blue}`
+                        : `${theme.color.purple}`
+                    }
+                  >
+                    {item.amount >= 0 ? '+' : ''}
+                    {formatAmount(item.amount)}
+                  </S.MoneyText>
+                </S._PayContainer>
+              ))}
             </S.PayContentContainer>
           </S.PayContainer>
         ))}

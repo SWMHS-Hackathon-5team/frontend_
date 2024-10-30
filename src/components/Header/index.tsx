@@ -22,6 +22,7 @@ const HeaderWrapper = styled.header`
 const Logo = styled(Link)`
   font-weight: 700;
   font-size: 3.125rem;
+  letter-spacing: -3px;
   background: ${theme.color.gradient};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

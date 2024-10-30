@@ -44,6 +44,12 @@ export const PayContainer = styled.div`
   padding: 12px;
 `
 
+export const _PayContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+`
+
 export const DateText = styled.p`
   font-size: 1rem;
   font-weight: 500;
@@ -52,10 +58,10 @@ export const DateText = styled.p`
 `
 
 export const PayContentContainer = styled.div`
-  padding: 12px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  /* align-items: center;
+  justify-content: space-between; */
 `
 export const PayContentText = styled.p`
   font-size: 1.25rem;
