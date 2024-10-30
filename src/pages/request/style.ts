@@ -91,7 +91,7 @@ export const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
+  z-index: 100;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -116,4 +116,14 @@ export const ModalButtonContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
+`
+export const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); // Semi-transparent background
+  backdrop-filter: blur(5px); // Apply blur effect
+  z-index: 99; // Ensure it's behind the modal but above other content
 `

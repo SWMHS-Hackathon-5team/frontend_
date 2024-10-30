@@ -16,6 +16,7 @@ import ThreeQuarterImg from '@/assets/icons/battery/threeQuarter.png'
 import NoneImg from '@/assets/icons/battery/none.png'
 import apiClient from '@/api/apiClient'
 import { useBoolean } from '@/context/boolContext'
+import { toast } from 'react-toastify'
 
 export interface RequestType {
   id: number
@@ -67,6 +68,7 @@ export const Map = () => {
   const onSuccess = () => {
     setIsAccept(false)
     setIsRequestBoxOpen(null)
+    toast.success('해주세요 승인 요청 전송 완료!')
   }
 
   useEffect(() => {

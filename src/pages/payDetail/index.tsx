@@ -24,7 +24,7 @@ const PayDetail = () => {
     const fetchMoney = async () => {
       try {
         const response = await apiClient.get('/money/my')
-        setMoney(response.data.data.data.money)
+        setMoney(response.data.data.money)
       } catch (err) {
         console.error('Error fetching money:', err)
       }

@@ -18,7 +18,6 @@ const Request = () => {
   const [roadAddress, setRoadAddress] = useState<string>('')
   const [detailAddress, setDetailAddress] = useState<string>('')
 
-  // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const KAKAO_REST_API_KEY = `${import.meta.env.VITE_KAKAO_REST_API}`
@@ -83,7 +82,15 @@ const Request = () => {
     setContent(e.target.value)
   }
 
-  const closeModal = () => setIsModalOpen(false)
+  const closeModal = () => {
+    setTitle('')
+    setContent('')
+    setMoney('')
+    setRoadAddress('')
+    setDetailAddress('')
+
+    setIsModalOpen(false)
+  }
 
   return (
     <div>
@@ -161,28 +168,30 @@ const Request = () => {
         </S.ButtonWrapper>
 
         {isModalOpen && (
-          <S.ModalContainer>
-            <div>
-              <S.ModalTitle>요청 완료</S.ModalTitle>
-
-              <S.ModalContent>
-                해주세요 등록이 완료되었습니다. 라이더가 의뢰를 수락할 때까지
-                기다려주세요.
-              </S.ModalContent>
-            </div>
-            <S.ModalButtonContainer>
-              <Button
-                onClick={closeModal}
-                styleType='ghost'
-                size={16}
-                weight={700}
-                width={78}
-                height={36}
-              >
-                확인
-              </Button>
-            </S.ModalButtonContainer>
-          </S.ModalContainer>
+          <>
+            <S.Backdrop />
+            <S.ModalContainer>
+              <div>
+                <S.ModalTitle>요청 완료</S.ModalTitle>
+                <S.ModalContent>
+                  해주세요 등록이 완료되었습니다. 라이더가 의뢰를 수락할 때까지
+                  기다려주세요.
+                </S.ModalContent>
+              </div>
+              <S.ModalButtonContainer>
+                <Button
+                  onClick={closeModal}
+                  styleType='ghost'
+                  size={16}
+                  weight={700}
+                  width={78}
+                  height={36}
+                >
+                  확인
+                </Button>
+              </S.ModalButtonContainer>
+            </S.ModalContainer>
+          </>
         )}
       </S.Wrapper>
     </div>

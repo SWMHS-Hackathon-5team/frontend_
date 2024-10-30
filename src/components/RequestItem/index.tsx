@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import * as S from './style'
 
 type ReqType = 'NON' | 'DOING' | 'WAITING' | 'SUCCESS' | 'FAILED'
@@ -21,6 +21,9 @@ interface RequestItemsProps {
   data: {
     data: RequestItem[]
   }
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>
+  setSelectedRequestId: Dispatch<SetStateAction<string | number | null>>
+  setSelectedReqType: Dispatch<SetStateAction<string | null>> // Add this prop
 }
 
 const STATUS_CONFIG: Record<ReqType, StatusConfig> = {
@@ -31,7 +34,12 @@ const STATUS_CONFIG: Record<ReqType, StatusConfig> = {
   FAILED: { text: '의뢰 실패', color: '#ccc' },
 }
 
-const RequestItems: React.FC<RequestItemsProps> = ({ data }) => {
+const RequestItems: React.FC<RequestItemsProps> = ({
+  data,
+  setIsModalOpen,
+  setSelectedRequestId,
+  setSelectedReqType, // Add this prop
+}) => {
   const getStatus = (reqType: ReqType): StatusConfig =>
     STATUS_CONFIG[reqType] || { text: '', color: '#000' }
 
@@ -43,12 +51,25 @@ const RequestItems: React.FC<RequestItemsProps> = ({ data }) => {
     return `${month}월 ${day}일`
   }
 
+  const handleClick = (reqType: ReqType, id: string | number) => {
+    if (reqType === 'WAITING') {
+      console.log('Clicked item ID:', id)
+      setSelectedRequestId(id)
+      setSelectedReqType(reqType) // Set reqType here
+      setIsModalOpen(true)
+    }
+  }
+
   return (
     <div>
       {data.data.map((item: RequestItem) => {
         const { text: statusText, color: statusColor } = getStatus(item.reqType)
+
         return (
-          <S.ItemsContainer key={item.id}>
+          <S.ItemsContainer
+            onClick={() => handleClick(item.reqType, item.id)}
+            key={item.id}
+          >
             <S.ItemsText>
               {formatDate(item.createdDt || item.updateDt)}
             </S.ItemsText>
