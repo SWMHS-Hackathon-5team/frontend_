@@ -39,7 +39,7 @@ export const RequestBoxInner = ({
         </Text>
         <div>
           <Text size={16} weight={400} color='#A6A6A6'>
-            작성자 : {userId}
+            {'작성자 : ' + userId}
           </Text>
           <Text size={16} weight={400} color='#A6A6A6'>
             {info.createdDt}
