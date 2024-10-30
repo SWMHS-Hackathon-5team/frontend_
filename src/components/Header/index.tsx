@@ -1,10 +1,11 @@
 import { theme } from '@/styles/theme'
 import styled from '@emotion/styled'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
     <HeaderWrapper>
-      <Logo>TANOMU!</Logo>
+      <Logo to={'/'}>TANOMU!</Logo>
     </HeaderWrapper>
   )
 }
@@ -18,7 +19,7 @@ const HeaderWrapper = styled.header`
   padding-left: 36px;
 `
 
-const Logo = styled.p`
+const Logo = styled(Link)`
   font-weight: 700;
   font-size: 3.125rem;
   background: ${theme.color.gradient};
